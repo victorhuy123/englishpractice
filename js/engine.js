@@ -5,9 +5,27 @@ let xp = parseInt(localStorage.getItem('speakeasy_xp')) || 0;
 document.getElementById('xp-count').innerText = xp;
 
 function startLevel(lvl) {
-    currentLevelData = (lvl === 'A1') ? A1_CONTENT : B1_CONTENT;
-    currentLevelData = currentLevelData.sort(() => Math.random() - 0.5); // Shuffle for variety
+    // 1. Decide which data to use based on the 'lvl' passed from the button
+    if (lvl === 'A1') {
+        currentLevelData = A1_CONTENT;
+    } else if (lvl === 'A2') {
+        currentLevelData = A2_CONTENT;
+    } else if (lvl === 'B1') {
+        currentLevelData = B1_CONTENT;
+    } else if (lvl === 'B2') {
+        currentLevelData = B2_CONTENT;
+    } else {
+        alert("Dữ liệu trình độ này đang được cập nhật!"); // Safety message
+        return;
+    }
+
+    // 2. Shuffle the questions so 48 hours of practice doesn't feel repetitive
+    currentLevelData = [...currentLevelData].sort(() => Math.random() - 0.5); 
+
+    // 3. Reset the counter to the first question
     currentIndex = 0;
+
+    // 4. Switch the screen and show the first question
     showScreen('practice-screen');
     renderQuestion();
 }
